@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<title>KPN Afsluittekst Generator – Optie 1</title>
+<title>KPN Afsluittekst Generator – Optie 2</title>
 <style>
 body { font-family: Arial; background:#f3fff3; margin:0; }
 header { background:#009900; color:white; padding:20px; font-size:26px; text-align:center; }
@@ -10,53 +10,33 @@ header { background:#009900; color:white; padding:20px; font-size:26px; text-ali
     max-width:850px; margin:auto; background:white; padding:25px;
     margin-top:30px; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
-label { display:block; margin-top:20px; font-weight:bold; }
-select {
-    width:100%; padding:12px; border-radius:8px; margin-top:5px;
-    border:1px solid #009900; background:#eaffea;
+label { margin-top:20px; display:block; font-weight:bold; }
+select { width:100%; padding:12px; border-radius:8px; background:#eaffea; margin-top:5px; border:1px solid #009900; }
+button { width:100%; background:#009900; color:white; margin-top:25px; padding:15px; border-radius:10px; border:none; cursor:pointer; }
+#output {
+    margin-top:25px; background:#eaffea; padding:20px; border-radius:10px; white-space:pre-line;
+    border:2px solid #009900; min-height:150px;
 }
-button {
-    width:100%; background:#009900; color:white; border:none;
-    margin-top:25px; padding:15px; border-radius:10px;
-    font-size:18px; cursor:pointer;
-}
-#output { margin-top:25px; background:#eaffea; border:2px solid #009900;
-    padding:20px; border-radius:10px; min-height:120px; white-space:pre-line; }
 </style>
 </head>
 <body>
 
-<header>KPN Afsluittekst Generator – Optie 1</header>
+<header>KPN Afsluittekst Generator – Optie 2</header>
 
 <div class="container">
 
-<label>Dienst</label>
-<select id="dienst">
-    <option value="">-- Kies een dienst --</option>
-    <option value="lora">LoRa</option>
-    <option value="c8y">Cumulocity</option>
-    <option value="rma">RMA</option>
-</select>
-
-<label>Domein</label>
-<select id="domein">
-    <option value="">-- Kies een domein --</option>
+<label>Selecteer categorie</label>
+<select id="cat">
+    <option value="">-- Kies een categorie --</option>
+    <option value="afmeldtekst">Afmeldtekst</option>
     <option value="bereik">Bereik</option>
-    <option value="accu">Accu</option>
-    <option value="gebruiker">Gebruikersbeheer</option>
-    <option value="ip">IP toevoegen</option>
-    <option value="afmelden">Afmeldtekst</option>
+    <option value="Batterij">Batterij</option>
+    <option value="c8yuser">C8Y - Nieuwe gebruiker</option>
+    <option value="c8yip">C8Y - IP toevoegen</option>
+    <option value="rma">RMA script</option>
 </select>
 
-<label>Type</label>
-<select id="type">
-    <option value="">-- Kies een type --</option>
-    <option value="troubleshooting">Troubleshooting</option>
-    <option value="documentatie">Documentatie</option>
-    <option value="rma">RMA Script</option>
-</select>
-
-<button onclick="genereer()">Genereer Tekst</button>
+<button onclick="gen()">Genereer Tekst</button>
 
 <div id="output"></div>
 
@@ -64,42 +44,21 @@ button {
 
 <script>
 const teksten = {
-    lora: {
-        bereik: {
-            troubleshooting: `GOEDE TEKST UIT EXCEL (Bereik Troubleshooting)`,
-        },
-        accu: {
-            troubleshooting: `GOEDE TEKST UIT EXCEL (Accu Troubleshooting)`,
-        }
-    },
-    c8y: {
-        gebruiker: {
-            documentatie: `GOEDE TEKST UIT EXCEL (Nieuwe gebruiker aanmaken)`,
-        },
-        ip: {
-            documentatie: `GOEDE TEKST UIT EXCEL (IP toevoegen)`,
-        }
-    },
-    rma: {
-        afmelden: {
-            rma: `GOEDE TEKST UIT EXCEL (RMA Script)`,
-        }
-    }
+    afmeldtekst: `Klant heeft een incident gemeld met betrekking tot een vraag over een api configuratie.
+Na overleg met een developer klant voorzien van uitleg en documentatie.
+Klant bevestigd dat het issue is verholpen en het nu naar wens werkt.
+
+Het ticket is afgemeld aan: Tom Veenhuis`,
+    bereik: `TEKST UIT EXCEL: LoRa bereik troubleshooting...`,
+    Batterij: `TEKST UIT EXCEL: LoRa Batterij troubleshooting...`,
+    c8yuser: `TEKST UIT EXCEL: Nieuwe gebruiker aanmaken C8Y...`,
+    c8yip: `TEKST UIT EXCEL: IP toevoegen in Cumulocity...`,
+    rma: `TEKST UIT EXCEL: RMA script klant uitvraag...`
 };
 
-function genereer() {
-    let d = document.getElementById("dienst").value;
-    let dm = document.getElementById("domein").value;
-    let t = document.getElementById("type").value;
-
-    if (!d || !dm || !t) {
-        document.getElementById("output").innerText = "⚠️ Vul alle velden in.";
-        return;
-    }
-
-    let tekst = teksten[d]?.[dm]?.[t];
-
-    document.getElementById("output").innerText = tekst || "Geen tekst gevonden.";
+function gen() {
+    let c = document.getElementById("cat").value;
+    document.getElementById("output").innerText = teksten[c] || "⚠️ Geen tekst gevonden.";
 }
 </script>
 
