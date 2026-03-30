@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<title>KPN Afsluittekst Generator – Optie 2</title>
+<title>KPN FuBe IoT Tekst Generator – Test</title>
 <style>
 body { font-family: Arial; background:#f3fff3; margin:0; }
 header { background:#009900; color:white; padding:20px; font-size:26px; text-align:center; }
@@ -35,10 +35,10 @@ button { width:100%; background:#009900; color:white; margin-top:25px; padding:1
 <select id="cat">
     <option value="">-- Kies een categorie --</option>
     <option value="afmeldtekstrfi">Afmeldtekst RFI</option>
-    <option value="bereik">Bereik</option>
-    <option value="accu">Accu</option>
-    <option value="c8yuser">C8Y - Nieuwe gebruiker</option>
-    <option value="c8yip">C8Y - IP toevoegen</option>
+    <option value="bereik">LoRa bereik first checks</option>
+    <option value="accu">Batterij first checks</option>
+    <option value="c8yuser">C8Y - Nieuwe gebruiker - Instructie</option>
+    <option value="c8yip">C8Y - IP toevoegen - Instructie</option>
     <option value="rma">RMA script</option>
 </select>
 
@@ -53,17 +53,85 @@ button { width:100%; background:#009900; color:white; margin-top:25px; padding:1
 
 <script>
 const teksten = {
-    afmeldtekstrfi: `<BEDRIJFSNAAM> heeft een ticket geregistreerd met betrekking tot een vraag over <ONDERWERP>.
+    afmeldtekstrfi: `<BEDRIJFSNAAM> heeft een ticket geregistreerd met betrekking tot <ONDERWERP>.
 KPN antwoordt als volgt:
 <ANTWOORD>
 <BEDRIJFSNAAM> bevestigd dat hiermee de gestelde vragen beantwoordt zijn.
 
 Het ticket is afgemeld aan: <NAAM>`,
-    bereik: `TEKST UIT EXCEL: LoRa bereik troubleshooting...`,
-    accu: `TEKST UIT EXCEL: LoRa accu troubleshooting...`,
-    c8yuser: `TEKST UIT EXCEL: Nieuwe gebruiker aanmaken C8Y...`,
-    c8yip: `TEKST UIT EXCEL: IP toevoegen in Cumulocity...`,
-    rma: `TEKST UIT EXCEL: RMA script klant uitvraag...`
+    bereik: `Deze 2 devices sturen sinds <DATUM> alleen nog joins, het netwerk stuurt join accepts terug, maar deze lijken niet aan te komen.
+
+De 2 meest voorkomende oorzaken hier van zijn slecht bereik, of een (bijna) lege batterij. Ik vermoed dat het in dit geval het bereik issue is, aangezien de uit te lezen signaal sterkte continu zwak is.
+
+Ik zou aanraden om één van de twee devices tijdelijk (een halve dag) buiten in open lucht te leggen. Indien dan de issues opgelost zijn, weten we zeker dat het een bereik issue is.
+
+Hier wat tips om het bereik permanent te verbeteren:
+Zorg dat er zo device min mogelijk afgeschermd is van de open lucht, dus niet achter metalen platen of betonnen muren. Buiten is het beste.
+Zorg dat het device niet dicht bij andere radio/wifi apparatuur in de buurt is geplaatst.
+Zorg dat het device zo hoog mogelijk geplaatst is.
+Eventueel kan er met sommige devices een externe antenne gebruikt worden, dit kan het bereik ook verbeteren.
+
+Ik hoor graag of jullie hier verder mee komen.`,
+    accu: `Ik heb het probleem wat verder onderzocht en gemerkt dat de batterijen van de twee defecte apparaten volledig leeg zijn.
+Aangezien ze ongeveer een maand hebben gewerkt, lijkt het logisch dat ze geen stroom van de voertuigen hebben gekregen.
+Ik hoop dat je de volgende vragen kunt beantwoorden:
+1: Klopt het dat deze twee apparaten ongeveer een maand (van maart tot april) hebben gewerkt nadat ze waren gemonteerd?
+2: Is de stroomtoevoer en bedrading gecontroleerd om te zien of er daadwerkelijk stroom naar de trackers wordt geleverd?
+Het is mogelijk dat de apparaten helemaal geen stroom krijgen, waardoor de batterijen leeg zijn geraakt. De kans dat dit het probleem is, wordt veel groter als ze inderdaad op hetzelfde voertuig/dezelfde stroomkabels zijn gemonteerd.
+Dit kan worden getest door de defecte apparaten op een ander voertuig aan te sluiten. Als ze dan weer gaan werken, ligt het probleem bij de stroomvoorziening/bedrading van deze twee voertuigen.
+Als je er absoluut zeker van bent dat het probleem niet aan de stroomtoevoer ligt, bijvoorbeeld als de twee gevallen zich bij vier verschillende voertuigen hebben voorgedaan en niet bij twee, en het overzetten van de trackers naar voertuigen waarvan bekend is dat ze werken niet tot het opnieuw werken van de trackers leidt,
+Stuur dan de antwoorden op de volgende vragen en de apparaten naar ons op:                                        
+KPN HQ 
+T.a.v.: <NAAM>
+Wilhelminakade 123
+3072 AP ROTTERDAM 
+Nederland
+
+Wat is/zijn het/de DevEUI ('s):
+Wanneer is het device geleverd:
+Vanaf wanneer is het device geactiveerd / ingezet:
+Geef een uitgebreide omschrijving Klacht / Incident:
+Sinds wanneer speelt het incident / is het incident geconstateerd:
+Is het device op een asset gemonteerd, op welke wijze en waarop:
+Heeft het gemelde device een optimale GPS (Lign of Sight) zichtverbinding? Dus niet indoor of onderop een asset gemonteerd:
+Graag ontvangen we foto's van het op het asset gemonteerde device:
+Is het device fysiek beschadigd voorafgaand of tijdens inzet:
+Wat is de (vermoedelijke) locatie van het device indien bekend:
+Fungeren vergelijkbare devices op dezelfde locatie wel correct:
+Contactgegevens inclusief afdres voor vervangende devices:
+Analyse KPN (alleen naar SalesSupport):`,
+    c8yuser: `Een Cumulocity klant kan vragen om een nieuw/extra account voor hun portal. Let er op, ze noemen deze portal vaak KPN Things (omdat zij de "nieuwe" Things niet kennen/gebruiken.
+
+Er moeten daarvoor meestal twee zaken gebeuren:
+T.B.A.`,
+    c8yip: `Een Cumulocity klant kan vragen om een nieuw/extra ip adres toegang te geven op hun portal. Let er op, ze noemen deze portal vaak KPN Things (omdat zij de "nieuwe" Things niet kennen/gebruiken.
+
+Hiervoor moet een ticket aangemaakt worden bij de cumulocity servicedesk. Dit gaat via T.B.A.`,
+    rma: `Wat is/zijn het/de DevEUI ('s):
+ 
+Wanneer is het device geleverd:
+ 
+Vanaf wanneer is het device geactiveerd / ingezet:
+ 
+Geef een uitgebreide omschrijving Klacht / Incident:
+ 
+Sinds wanneer speelt het incident / is het incident geconstateerd:
+ 
+Is het device op een asset gemonteerd, op welke wijze en waarop:
+ 
+Heeft het gemelde device een optimale GPS (Lign of Sight) zichtverbinding? Dus niet indoor of onderop een asset gemonteerd:
+ 
+Graag ontvangen we foto's van het op het asset gemonteerde device:
+ 
+Is het device fysiek beschadigd voorafgaand of tijdens inzet:
+ 
+Wat is de (vermoedelijke) locatie van het device indien bekend:
+ 
+Fungeren vergelijkbare devices op dezelfde locatie wel correct:
+ 
+Contactgegevens inclusief afdres voor vervangende devices:
+ 
+Analyse KPN (alleen naar SalesSupport):`
 };
 
 function gen() {
