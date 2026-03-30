@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>KPN Afsluittekst Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4fdf4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #009900;
+            color: white;
+            padding: 20px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 20px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: 1px solid #009900;
+            background: #eaffea;
+        }
+
+        button {
+            margin-top: 25px;
+            padding: 15px 20px;
+            background: #009900;
+            border: none;
+            color: white;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #007700;
+        }
+
+        #outputBox {
+            margin-top: 30px;
+            padding: 20px;
+            border: 2px solid #009900;
+            background: #eaffea;
+            border-radius: 10px;
+            white-space: pre-line;
+            min-height: 80px;
+        }
+
+        #copyBtn {
+            margin-top: 10px;
+            background: #00bb00;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    KPN Afsluittekst Generator
+</header>
+
+<div class="container">
+    <label>Dienst</label>
+    <select id="dienst">
+        <option value="">-- Kies een dienst --</option>
+        <option value="Mobiel">Mobiel</option>
+        <option value="Internet">Internet</option>
+        <option value="TV">TV</option>
+        <option value="Vast Bellen">Vast Bellen</option>
+        <option value="Cloud / IT">Cloud / IT</option>
+    </select>
+
+    <label>Domein</label>
+    <select id="domein">
+        <option value="">-- Kies een domein --</option>
+        <option value="Netwerk">Netwerk</option>
+        <option value="Provisioning">Provisioning</option>
+        <option value="Authenticatie">Authenticatie</option>
+        <option value="Billing">Billing</option>
+        <option value="Service">Service</option>
+    </select>
+
+    <label>Type probleem</label>
+    <select id="type">
+        <option value="">-- Kies type --</option>
+        <option value="Hardware">Hardware</option>
+        <option value="Software">Software</option>
+        <option value="Configuratie">Configuratie</option>
+        <option value="Onbekend">Onbekend</option>
+    </select>
+
+    <button onclick="genereerTekst()">Genereer Afsluittekst</button>
+
+    <div id="outputBox"></div>
+    <button id="copyBtn" onclick="copyText()">Tekst kopiëren</button>
+</div>
+
+<script>
+function genereerTekst() {
+    const dienst = document.getElementById("dienst").value;
+    const domein = document.getElementById("domein").value;
+    const type = document.getElementById("type").value;
+
+    if (!dienst || !domein || !type) {
+        document.getElementById("outputBox").innerText = "⚠️ Vul alle velden in om een afsluittekst te genereren.";
+        return;
+    }
+
+    const tekst = 
+`Beste klant,
+
+Uw melding betreffende **${dienst}** binnen het domein **${domein}** is succesvol behandeld.
+De oorzaak was gerelateerd aan: **${type}**.
+
+De benodigde acties zijn uitgevoerd en het incident kan hiermee worden afgesloten.
+Mocht u opnieuw problemen ervaren, neem dan gerust contact met ons op.
+
+Met vriendelijke groet,
+KPN Support`;
+
+    document.getElementById("outputBox").innerText = tekst;
+}
+
+function copyText() {
+    const tekst = document.getElementById("outputBox").innerText;
+    navigator.clipboard.writeText(tekst);
+    alert("✅ Tekst gekopieerd!");
+}
+</script>
+
+</body>
+</html>
