@@ -17,6 +17,12 @@ button { width:100%; background:#009900; color:white; margin-top:25px; padding:1
     margin-top:25px; background:#eaffea; padding:20px; border-radius:10px; white-space:pre-line;
     border:2px solid #009900; min-height:150px;
 }
+#copyBtn {
+    background:#00bb00; 
+    margin-top:12px; 
+    padding:12px;
+    border-radius:10px;
+}
 </style>
 </head>
 <body>
@@ -28,9 +34,9 @@ button { width:100%; background:#009900; color:white; margin-top:25px; padding:1
 <label>Selecteer categorie</label>
 <select id="cat">
     <option value="">-- Kies een categorie --</option>
-    <option value="afmeldtekst">Afmeldtekst</option>
+    <option value="afmeldtekstrfi">Afmeldtekst RFI</option>
     <option value="bereik">Bereik</option>
-    <option value="Batterij">Batterij</option>
+    <option value="accu">Accu</option>
     <option value="c8yuser">C8Y - Nieuwe gebruiker</option>
     <option value="c8yip">C8Y - IP toevoegen</option>
     <option value="rma">RMA script</option>
@@ -40,17 +46,21 @@ button { width:100%; background:#009900; color:white; margin-top:25px; padding:1
 
 <div id="output"></div>
 
+<!-- ✅ Toegevoegde kopieerknop -->
+<button id="copyBtn" onclick="copyText()">Kopieer tekst</button>
+
 </div>
 
 <script>
 const teksten = {
-    afmeldtekst: `Klant heeft een incident gemeld met betrekking tot een vraag over een api configuratie.
-Na overleg met een developer klant voorzien van uitleg en documentatie.
-Klant bevestigd dat het issue is verholpen en het nu naar wens werkt.
+    afmeldtekstrfi: `<BEDRIJFSNAAM> heeft een ticket geregistreerd met betrekking tot een vraag over <ONDERWERP>.
+KPN antwoordt als volgt:
+<ANTWOORD>
+<BEDRIJFSNAAM> bevestigd dat hiermee de gestelde vragen beantwoordt zijn.
 
-Het ticket is afgemeld aan: Tom Veenhuis`,
+Het ticket is afgemeld aan: <NAAM>`,
     bereik: `TEKST UIT EXCEL: LoRa bereik troubleshooting...`,
-    Batterij: `TEKST UIT EXCEL: LoRa Batterij troubleshooting...`,
+    accu: `TEKST UIT EXCEL: LoRa accu troubleshooting...`,
     c8yuser: `TEKST UIT EXCEL: Nieuwe gebruiker aanmaken C8Y...`,
     c8yip: `TEKST UIT EXCEL: IP toevoegen in Cumulocity...`,
     rma: `TEKST UIT EXCEL: RMA script klant uitvraag...`
@@ -59,6 +69,20 @@ Het ticket is afgemeld aan: Tom Veenhuis`,
 function gen() {
     let c = document.getElementById("cat").value;
     document.getElementById("output").innerText = teksten[c] || "⚠️ Geen tekst gevonden.";
+}
+
+/* ✅ Toegevoegde copy-functie */
+function copyText() {
+    const tekst = document.getElementById("output").innerText;
+
+    if (!tekst || tekst.trim() === "") {
+        alert("Er is geen tekst om te kopiëren.");
+        return;
+    }
+
+    navigator.clipboard.writeText(tekst)
+        .then(() => alert("✅ Tekst gekopieerd!"))
+        .catch(() => alert("❌ Kopiëren mislukt."));
 }
 </script>
 
