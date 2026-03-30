@@ -1,154 +1,105 @@
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <title>KPN Afsluittekst Generator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4fdf4;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background: #009900;
-            color: white;
-            padding: 20px;
-            font-size: 28px;
-            text-align: center;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            margin-top: 30px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        }
-
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 20px;
-        }
-
-        select {
-            width: 100%;
-            padding: 12px;
-            margin-top: 5px;
-            border-radius: 8px;
-            border: 1px solid #009900;
-            background: #eaffea;
-        }
-
-        button {
-            margin-top: 25px;
-            padding: 15px 20px;
-            background: #009900;
-            border: none;
-            color: white;
-            font-size: 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        button:hover {
-            background: #007700;
-        }
-
-        #outputBox {
-            margin-top: 30px;
-            padding: 20px;
-            border: 2px solid #009900;
-            background: #eaffea;
-            border-radius: 10px;
-            white-space: pre-line;
-            min-height: 80px;
-        }
-
-        #copyBtn {
-            margin-top: 10px;
-            background: #00bb00;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>KPN Afsluittekst Generator – Optie 1</title>
+<style>
+body { font-family: Arial; background:#f3fff3; margin:0; }
+header { background:#009900; color:white; padding:20px; font-size:26px; text-align:center; }
+.container {
+    max-width:850px; margin:auto; background:white; padding:25px;
+    margin-top:30px; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+label { display:block; margin-top:20px; font-weight:bold; }
+select {
+    width:100%; padding:12px; border-radius:8px; margin-top:5px;
+    border:1px solid #009900; background:#eaffea;
+}
+button {
+    width:100%; background:#009900; color:white; border:none;
+    margin-top:25px; padding:15px; border-radius:10px;
+    font-size:18px; cursor:pointer;
+}
+#output { margin-top:25px; background:#eaffea; border:2px solid #009900;
+    padding:20px; border-radius:10px; min-height:120px; white-space:pre-line; }
+</style>
 </head>
 <body>
 
-<header>
-    KPN Afsluittekst Generator
-</header>
+<header>KPN Afsluittekst Generator – Optie 1</header>
 
 <div class="container">
-    <label>Dienst</label>
-    <select id="dienst">
-        <option value="">-- Kies een dienst --</option>
-        <option value="Mobiel">Mobiel</option>
-        <option value="Internet">Internet</option>
-        <option value="TV">TV</option>
-        <option value="Vast Bellen">Vast Bellen</option>
-        <option value="Cloud / IT">Cloud / IT</option>
-    </select>
 
-    <label>Domein</label>
-    <select id="domein">
-        <option value="">-- Kies een domein --</option>
-        <option value="Netwerk">Netwerk</option>
-        <option value="Provisioning">Provisioning</option>
-        <option value="Authenticatie">Authenticatie</option>
-        <option value="Billing">Billing</option>
-        <option value="Service">Service</option>
-    </select>
+<label>Dienst</label>
+<select id="dienst">
+    <option value="">-- Kies een dienst --</option>
+    <option value="lora">LoRa</option>
+    <option value="c8y">Cumulocity</option>
+    <option value="rma">RMA</option>
+</select>
 
-    <label>Type probleem</label>
-    <select id="type">
-        <option value="">-- Kies type --</option>
-        <option value="Hardware">Hardware</option>
-        <option value="Software">Software</option>
-        <option value="Configuratie">Configuratie</option>
-        <option value="Onbekend">Onbekend</option>
-    </select>
+<label>Domein</label>
+<select id="domein">
+    <option value="">-- Kies een domein --</option>
+    <option value="bereik">Bereik</option>
+    <option value="accu">Accu</option>
+    <option value="gebruiker">Gebruikersbeheer</option>
+    <option value="ip">IP toevoegen</option>
+    <option value="afmelden">Afmeldtekst</option>
+</select>
 
-    <button onclick="genereerTekst()">Genereer Afsluittekst</button>
+<label>Type</label>
+<select id="type">
+    <option value="">-- Kies een type --</option>
+    <option value="troubleshooting">Troubleshooting</option>
+    <option value="documentatie">Documentatie</option>
+    <option value="rma">RMA Script</option>
+</select>
 
-    <div id="outputBox"></div>
-    <button id="copyBtn" onclick="copyText()">Tekst kopiëren</button>
+<button onclick="genereer()">Genereer Tekst</button>
+
+<div id="output"></div>
+
 </div>
 
 <script>
-function genereerTekst() {
-    const dienst = document.getElementById("dienst").value;
-    const domein = document.getElementById("domein").value;
-    const type = document.getElementById("type").value;
+const teksten = {
+    lora: {
+        bereik: {
+            troubleshooting: `GOEDE TEKST UIT EXCEL (Bereik Troubleshooting)`,
+        },
+        accu: {
+            troubleshooting: `GOEDE TEKST UIT EXCEL (Accu Troubleshooting)`,
+        }
+    },
+    c8y: {
+        gebruiker: {
+            documentatie: `GOEDE TEKST UIT EXCEL (Nieuwe gebruiker aanmaken)`,
+        },
+        ip: {
+            documentatie: `GOEDE TEKST UIT EXCEL (IP toevoegen)`,
+        }
+    },
+    rma: {
+        afmelden: {
+            rma: `GOEDE TEKST UIT EXCEL (RMA Script)`,
+        }
+    }
+};
 
-    if (!dienst || !domein || !type) {
-        document.getElementById("outputBox").innerText = "⚠️ Vul alle velden in om een afsluittekst te genereren.";
+function genereer() {
+    let d = document.getElementById("dienst").value;
+    let dm = document.getElementById("domein").value;
+    let t = document.getElementById("type").value;
+
+    if (!d || !dm || !t) {
+        document.getElementById("output").innerText = "⚠️ Vul alle velden in.";
         return;
     }
 
-    const tekst = 
-`Beste klant,
+    let tekst = teksten[d]?.[dm]?.[t];
 
-Uw melding betreffende **${dienst}** binnen het domein **${domein}** is succesvol behandeld.
-De oorzaak was gerelateerd aan: **${type}**.
-
-De benodigde acties zijn uitgevoerd en het incident kan hiermee worden afgesloten.
-Mocht u opnieuw problemen ervaren, neem dan gerust contact met ons op.
-
-Met vriendelijke groet,
-KPN Support`;
-
-    document.getElementById("outputBox").innerText = tekst;
-}
-
-function copyText() {
-    const tekst = document.getElementById("outputBox").innerText;
-    navigator.clipboard.writeText(tekst);
-    alert("✅ Tekst gekopieerd!");
+    document.getElementById("output").innerText = tekst || "Geen tekst gevonden.";
 }
 </script>
 
